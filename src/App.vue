@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import { useAuthStore } from '@/store/auth/AuthStore'
+import { storeToRefs } from 'pinia'
 
+const store = useAuthStore()
+const { isAuth, getAuthState } = storeToRefs(store)
+console.log(getAuthState.value)
 </script>
 
 <template>
@@ -17,7 +22,6 @@ import { RouterLink, RouterView } from 'vue-router'
 </template>
 
 <style scoped lang="scss">
-
 .wrapper {
   padding: 20px;
   background-color: bisque;
