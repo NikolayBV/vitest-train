@@ -32,7 +32,7 @@ export default defineComponent({
         <nav v-else class="nav-wrapper">Login</nav>
       </div>
     </header>
-    <RouterView class="main" />
+    <RouterView />
     <footer>Vue Test app</footer>
   </div>
 </template>
