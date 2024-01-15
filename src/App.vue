@@ -2,20 +2,25 @@
 import { RouterLink, RouterView } from 'vue-router'
 import { useAuthStore } from '@/store/auth/AuthStore'
 import { storeToRefs } from 'pinia'
+import Router from '@/router'
 
 const store = useAuthStore()
-const { isAuth, getAuthState } = storeToRefs(store)
-console.log(getAuthState.value)
+const router = Router
+const { isAuth } = storeToRefs(store)
+if (!isAuth.value) {
+  router.push('/login')
+}
 </script>
 
 <template>
   <header>
     <div class="wrapper">
-      <nav class="nav-wrapper">
+      <nav v-if="isAuth" class="nav-wrapper">
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/posts">Posts</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
+      <nav v-else class="nav-wrapper">Login</nav>
     </div>
   </header>
   <RouterView />

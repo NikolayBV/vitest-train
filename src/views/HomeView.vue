@@ -1,12 +1,22 @@
-<script lang='ts'>
+<script lang="ts">
 import { defineComponent } from 'vue'
-import { RouterLink } from 'vue-router'
+import { useAuth0 } from '@auth0/auth0-vue'
+import { useAuthStore } from '@/store/auth/AuthStore'
 
 export default defineComponent({
   name: 'HomeView',
-  components: { RouterLink },
   props: {},
   setup() {
+    const store = useAuthStore()
+    const { logout } = useAuth0()
+    const setLogout = () => {
+      logout()
+      localStorage.clear()
+      store.setNonAuth()
+    }
+    return {
+      setLogout
+    }
   }
 })
 </script>
@@ -14,11 +24,9 @@ export default defineComponent({
 <template>
   <div>
     <div class="">
-      Lox
+      <button @click="setLogout">Logout</button>
     </div>
   </div>
 </template>
 
-<style scoped lang='scss'>
-
-</style>
+<style scoped lang="scss"></style>
