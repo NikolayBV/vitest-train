@@ -2,20 +2,22 @@
 import Router from '@/router'
 import { RouterLink, RouterView } from 'vue-router'
 import { defineComponent, ref, watchEffect } from 'vue'
+import { useAuthStore } from '@/store/auth/AuthStore'
+import { storeToRefs } from 'pinia'
 
 export default defineComponent({
   name: 'App',
   props: {},
   setup() {
     const router = Router
-    const token = ref()
+    const store = useAuthStore()
+    const { getTokenState } = storeToRefs(store)
     watchEffect(() => {
-      token.value = localStorage.getItem('token')
-      if (!token.value) {
+      if (!getTokenState.value) {
         router.push('/login')
       }
     })
-    return { router, token, RouterLink, RouterView }
+    return { router, getTokenState, RouterLink, RouterView }
   }
 })
 </script>
@@ -24,7 +26,7 @@ export default defineComponent({
   <div class="app-wrapper">
     <header>
       <div class="header-wrapper">
-        <nav v-if="token" class="nav-wrapper">
+        <nav v-if="getTokenState" class="nav-wrapper">
           <RouterLink to="/">Home</RouterLink>
           <RouterLink to="/posts">Posts</RouterLink>
           <RouterLink to="/about">About</RouterLink>

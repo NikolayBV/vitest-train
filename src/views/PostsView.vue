@@ -1,52 +1,57 @@
-<script lang='ts'>
+<script lang="ts">
 import { defineComponent, ref, watchEffect } from 'vue'
 import { APP_CONSTANTS } from '@/utils/constants'
 import type { Post } from '@/utils/interfaces'
 import PostItem from '@/components/PostItem/PostItem.vue'
+import { usePostsStore } from '@/store/Posts/PostsStore'
+import { storeToRefs } from 'pinia'
 
 export default defineComponent({
   name: 'PostsView',
   components: { PostItem },
   props: {},
   setup() {
-    const posts = ref<Array<Post>>([]);
-    const page = ref<number>(1);
-    const limit = ref<number>(10);
-    const totalPages = ref();
+    const postsStore = usePostsStore()
+    const { getPostsState } = storeToRefs(postsStore)
+    const page = ref<number>(1)
+    const limit = ref<number>(10)
+    const totalPages = ref()
     watchEffect(async () => {
-      const responsePosts = await fetch(`${APP_CONSTANTS.BASE_URL}/posts?_page=${page.value}&_limit=${limit.value}`);
-      totalPages.value = Number(responsePosts.headers.get('X-Total-Count')) / limit.value;
-      posts.value = await responsePosts.json();
-    });
+      const responsePosts = await fetch(
+        `${APP_CONSTANTS.BASE_URL}/posts?_page=${page.value}&_limit=${limit.value}`
+      )
+      totalPages.value = Number(responsePosts.headers.get('X-Total-Count')) / limit.value
+      postsStore.setPostsState(await responsePosts.json())
+    })
     const setNextPage = () => {
       if (page.value < totalPages.value || !totalPages.value) {
-        page.value += 1;
+        page.value += 1
       }
     }
     const setPrevPage = () => {
       if (page.value > 1) {
-        page.value -= 1;
+        page.value -= 1
       }
     }
 
-    return {posts, setNextPage, setPrevPage};
-  },
+    return { getPostsState, setNextPage, setPrevPage }
+  }
 })
 </script>
 
 <template>
   <div>
     <div class="posts-wrapper">
-      <PostItem :key="post.id" v-for="post in posts" :post="post"/>
+      <PostItem :key="post.id" v-for="post in getPostsState" :post="post" />
     </div>
     <div class="pagination-wrapper">
-      <button class="pagination-button" @click="setPrevPage" >Prev</button>
+      <button class="pagination-button" @click="setPrevPage">Prev</button>
       <button class="pagination-button" @click="setNextPage">Next</button>
     </div>
   </div>
 </template>
 
-<style scoped lang='scss'>
+<style scoped lang="scss">
 .posts-wrapper {
   display: flex;
   flex-direction: column;

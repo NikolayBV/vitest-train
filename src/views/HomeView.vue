@@ -11,8 +11,7 @@ export default defineComponent({
     const { logout } = useAuth0()
     const setLogout = () => {
       logout()
-      localStorage.clear()
-      store.setNonAuth()
+      store.clearToken()
     }
     return {
       setLogout

@@ -2,13 +2,13 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
 export const useAuthStore = defineStore('auth', () => {
-  const isAuth = ref<boolean>(false)
-  const getAuthState = computed(() => isAuth.value)
-  function setAuth() {
-    isAuth.value = true
+  const token = ref<string>('')
+  const getTokenState = computed(() => token.value)
+  function setToken(tokenAuth: string) {
+    token.value = tokenAuth
   }
-  function setNonAuth() {
-    isAuth.value = false
+  function clearToken() {
+    token.value = ''
   }
-  return { isAuth, getAuthState, setNonAuth, setAuth }
+  return { token, getTokenState, setToken, clearToken }
 })

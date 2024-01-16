@@ -14,8 +14,7 @@ export default defineComponent({
     watch(user, async () => {
       const token = await getAccessTokenSilently()
       if (token) {
-        localStorage.setItem('token', token)
-        store.setAuth()
+        store.setToken(token)
         await router.push('/')
       }
     })
