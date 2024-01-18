@@ -3,7 +3,7 @@ import { defineComponent, ref, watchEffect } from 'vue'
 import { APP_CONSTANTS } from '@/utils/constants'
 import type { Post } from '@/utils/interfaces'
 import PostItem from '@/components/PostItem/PostItem.vue'
-import { usePostsStore } from '@/store/Posts/PostsStore'
+import { usePostsStore } from '@/store/posts/PostsStore'
 import { storeToRefs } from 'pinia'
 
 export default defineComponent({
@@ -40,7 +40,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>
+  <div v-if="getPostsState.length">
     <div class="posts-wrapper">
       <PostItem :key="post.id" v-for="post in getPostsState" :post="post" />
     </div>
@@ -49,6 +49,7 @@ export default defineComponent({
       <button class="pagination-button" @click="setNextPage">Next</button>
     </div>
   </div>
+  <div v-else>Loading...</div>
 </template>
 
 <style scoped lang="scss">

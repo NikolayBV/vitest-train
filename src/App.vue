@@ -1,16 +1,28 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch, watchEffect } from 'vue'
 import { useAuth0 } from '@auth0/auth0-vue'
 import PrivateRoute from '@/components/Routes/PrivateRoute.vue'
 import PublicRoute from '@/components/Routes/PublicRoute.vue'
+import { formatUser } from '@/utils/functions'
+import { useUserStore } from '@/store/user/UserStore'
+import { useAuthStore } from '@/store/auth/AuthStore'
 
 export default defineComponent({
   name: 'App',
   components: { PublicRoute, PrivateRoute },
   props: {},
   setup() {
-    const { isAuthenticated, isLoading, idTokenClaims } = useAuth0()
-    console.log(idTokenClaims.value?.role)
+    const userStore = useUserStore()
+    const authStore = useAuthStore()
+    const { isAuthenticated, isLoading, idTokenClaims, getAccessTokenSilently } = useAuth0()
+    watchEffect(async () => {
+      const newValue = idTokenClaims.value
+      const userToken = await getAccessTokenSilently()
+      if (newValue && userToken) {
+        authStore.setToken(userToken)
+        userStore.setUserState(formatUser(newValue))
+      }
+    })
     return { isLoading, isAuthenticated }
   }
 })
