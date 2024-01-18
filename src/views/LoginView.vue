@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, watch } from 'vue'
+import { defineComponent, watchEffect } from 'vue'
 import { useAuth0 } from '@auth0/auth0-vue'
 import { useAuthStore } from '@/store/auth/AuthStore'
 import Router from '@/router'
@@ -8,10 +8,10 @@ export default defineComponent({
   name: 'LoginView',
   props: {},
   setup() {
-    const { loginWithRedirect, user, getAccessTokenSilently } = useAuth0()
+    const { loginWithRedirect, user, getAccessTokenSilently, idTokenClaims } = useAuth0()
     const store = useAuthStore()
     const router = Router
-    watch(user, async () => {
+    watchEffect(async () => {
       const token = await getAccessTokenSilently()
       if (token) {
         store.setToken(token)

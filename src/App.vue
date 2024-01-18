@@ -1,23 +1,17 @@
 <script lang="ts">
-import Router from '@/router'
-import { RouterLink, RouterView } from 'vue-router'
-import { defineComponent, ref, watchEffect } from 'vue'
-import { useAuthStore } from '@/store/auth/AuthStore'
-import { storeToRefs } from 'pinia'
+import { defineComponent, ref } from 'vue'
+import { useAuth0 } from '@auth0/auth0-vue'
+import PrivateRoute from '@/components/Routes/PrivateRoute.vue'
+import PublicRoute from '@/components/Routes/PublicRoute.vue'
 
 export default defineComponent({
   name: 'App',
+  components: { PublicRoute, PrivateRoute },
   props: {},
   setup() {
-    const router = Router
-    const store = useAuthStore()
-    const { getTokenState } = storeToRefs(store)
-    watchEffect(() => {
-      if (!getTokenState.value) {
-        router.push('/login')
-      }
-    })
-    return { router, getTokenState, RouterLink, RouterView }
+    const { isAuthenticated, isLoading, idTokenClaims } = useAuth0()
+    console.log(idTokenClaims.value?.role)
+    return { isLoading, isAuthenticated }
   }
 })
 </script>
@@ -26,15 +20,18 @@ export default defineComponent({
   <div class="app-wrapper">
     <header>
       <div class="header-wrapper">
-        <nav v-if="getTokenState" class="nav-wrapper">
-          <RouterLink to="/">Home</RouterLink>
-          <RouterLink to="/posts">Posts</RouterLink>
-          <RouterLink to="/about">About</RouterLink>
+        <nav v-if="isAuthenticated" class="nav-wrapper">
+          <PrivateRoute />
         </nav>
-        <nav v-else class="nav-wrapper">Login</nav>
+        <nav v-else class="nav-wrapper">
+          <PublicRoute />
+        </nav>
       </div>
     </header>
-    <RouterView />
+    <div>
+      <RouterView v-if="!isLoading" />
+      <div v-else>Loading</div>
+    </div>
     <footer>Vue Test app</footer>
   </div>
 </template>
