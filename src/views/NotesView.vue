@@ -1,39 +1,18 @@
 <script lang="ts">
 import { defineComponent, ref, watchEffect } from 'vue'
-import { APP_CONSTANTS } from '@/utils/constants'
-import type { Post } from '@/utils/interfaces'
+import type { Note } from '@/utils/interfaces'
 import PostItem from '@/components/PostItem/PostItem.vue'
-import { usePostsStore } from '@/store/posts/PostsStore'
-import { storeToRefs } from 'pinia'
 
 export default defineComponent({
-  name: 'PostsView',
+  name: 'NotesView',
   components: { PostItem },
   props: {},
   setup() {
-    const postsStore = usePostsStore()
-    const { getPostsState } = storeToRefs(postsStore)
-    const page = ref<number>(1)
-    const limit = ref<number>(10)
-    const totalPages = ref()
-    watchEffect(async () => {
-      const responsePosts = await fetch(
-        `${APP_CONSTANTS.BASE_URL}/posts?_page=${page.value}&_limit=${limit.value}`
-      )
-      totalPages.value = Number(responsePosts.headers.get('X-Total-Count')) / limit.value
-      postsStore.setPostsState(await responsePosts.json())
+    const notes = ref<Array<Note>>([])
+    watchEffect(() => {
+      const storageNotes = localStorage.getItem('notes')
+      notes.value = storageNotes as Array<Note>
     })
-    const setNextPage = () => {
-      if (page.value < totalPages.value || !totalPages.value) {
-        page.value += 1
-      }
-    }
-    const setPrevPage = () => {
-      if (page.value > 1) {
-        page.value -= 1
-      }
-    }
-
     return { getPostsState, setNextPage, setPrevPage }
   }
 })

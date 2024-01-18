@@ -1,18 +1,20 @@
-<script lang='ts'>
+<script lang="ts">
 import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'AboutView',
   props: {},
-  setup() {
-  }
+  setup() {}
 })
 </script>
 
 <template>
-  <div></div>
+  <div class="about-wrapper">Lox</div>
 </template>
 
-<style scoped lang='scss'>
-
+<style scoped lang="scss">
+.about-wrapper {
+  display: flex;
+  justify-content: center;
+}
 </style>

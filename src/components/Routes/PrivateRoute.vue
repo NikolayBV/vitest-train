@@ -10,7 +10,7 @@ export default defineComponent({
 
 <template>
   <RouterLink to="/">Home</RouterLink>
-  <RouterLink to="/posts">Posts</RouterLink>
+  <RouterLink to="/notes">Notes</RouterLink>
   <RouterLink to="/about">About</RouterLink>
 </template>
 

@@ -1,8 +1,9 @@
-export interface Post {
-  userId: number
-  id: number
-  title: string
-  body: string
+export interface Note {
+  id: string
+  createdAt: Date
+  updatedAt: Date
+  author: string
+  text: string
 }
 
 export interface User {
