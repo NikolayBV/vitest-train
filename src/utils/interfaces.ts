@@ -1,9 +1,10 @@
 export interface Note {
   id: string
   createdAt: Date
-  updatedAt: Date
+  updatedAt?: Date
   author: string
-  text: string
+  title: string
+  body: string
 }
 
 export interface User {

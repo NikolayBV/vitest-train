@@ -2,11 +2,11 @@
 import { defineComponent } from 'vue'
 import { useAuth0 } from '@auth0/auth0-vue'
 import { useAuthStore } from '@/store/auth/AuthStore'
-import CreatePostCard from '@/components/CreatePostCars/CreatePostCard.vue'
+import CreateNoteCard from '@/components/CreateNoteCars/CreateNoteCard.vue'
 
 export default defineComponent({
   name: 'HomeView',
-  components: { CreatePostCard },
+  components: { CreateNoteCard },
   props: {},
   setup() {
     const store = useAuthStore()
@@ -25,7 +25,7 @@ export default defineComponent({
 <template>
   <div>
     <div class="home-container">
-      <CreatePostCard />
+      <CreateNoteCard />
       <button @click="setLogout">Logout</button>
     </div>
   </div>
@@ -33,6 +33,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .home-container {
+  margin-top: 25vh;
   display: flex;
   flex-direction: column;
   justify-content: center;

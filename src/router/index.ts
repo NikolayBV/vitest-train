@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import PostsView from '@/views/PostsView.vue'
 import HomeView from '@/views/HomeView.vue'
 import { authGuard } from '@auth0/auth0-vue'
+import NotesView from '@/views/NotesView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,9 +13,9 @@ const router = createRouter({
       beforeEnter: authGuard
     },
     {
-      path: '/posts',
+      path: '/notes',
       name: 'posts',
-      component: PostsView,
+      component: NotesView,
       beforeEnter: authGuard
     },
     {

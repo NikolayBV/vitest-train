@@ -42,18 +42,17 @@ export default defineComponent({
     </header>
     <div>
       <RouterView v-if="!isLoading" />
-      <div v-else>Loading</div>
+      <div style="display: flex; justify-content: center" v-else>Loading...</div>
     </div>
-    <footer>Vue Test app</footer>
+    <footer class="footer">Vue Test app</footer>
   </div>
 </template>
 
 <style scoped lang="scss">
 .app-wrapper {
-  min-height: 100vh;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 .header-wrapper {
   padding: 20px;
@@ -67,6 +66,11 @@ export default defineComponent({
   gap: 20px;
 }
 .footer {
-  align-self: end;
+  padding: 10px;
+  background-color: #eee;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 </style>

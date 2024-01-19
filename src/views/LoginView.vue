@@ -28,7 +28,14 @@ export default defineComponent({
 </script>
 
 <template>
-  <button @click="login">Login</button>
+  <div class="login-wrapper">
+    <button @click="login">Login</button>
+  </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+}
+</style>

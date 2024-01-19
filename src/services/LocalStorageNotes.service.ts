@@ -1,9 +1,14 @@
 import type { Note } from '@/utils/interfaces'
 
-export class LocalStorageNotesService {
+class LocalStorageNotesService {
   private storage: Storage
   constructor() {
     this.storage = localStorage
+  }
+
+  getNotes() {
+    const storageNotes = this.storage.getItem('notes')
+    return storageNotes?.length ? (JSON.parse(storageNotes) as Note[]) : []
   }
 
   setNotes(notes: Note[]) {
@@ -70,3 +75,5 @@ export class LocalStorageNotesService {
     this.storage.clear()
   }
 }
+
+export default LocalStorageNotesService

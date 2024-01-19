@@ -1,55 +1,55 @@
 <script lang="ts">
-import { defineComponent, ref, watchEffect } from 'vue'
+import { defineComponent, ref, watch, watchEffect } from 'vue'
 import type { Note } from '@/utils/interfaces'
-import PostItem from '@/components/PostItem/PostItem.vue'
+import LocalStorageNotesService from '@/services/LocalStorageNotes.service'
+import NoteItem from '@/components/NoteItem/NoteItem.vue'
 
 export default defineComponent({
   name: 'NotesView',
-  components: { PostItem },
+  components: { NoteItem },
   props: {},
-  setup() {
+  setup(props, ctx) {
+    const storage = new LocalStorageNotesService()
     const notes = ref<Array<Note>>([])
+
+    const handleUpdateItem = (note: Note) => {
+      notes.value = notes.value.map((item) => {
+        if (item.id === note.id) {
+          return note
+        } else {
+          return item
+        }
+      })
+    }
     watchEffect(() => {
-      const storageNotes = localStorage.getItem('notes')
-      notes.value = storageNotes as Array<Note>
+      notes.value = storage.getNotes()
     })
-    return { getPostsState, setNextPage, setPrevPage }
+    return { notes, handleUpdateItem }
   }
 })
 </script>
 
 <template>
-  <div v-if="getPostsState.length">
-    <div class="posts-wrapper">
-      <PostItem :key="post.id" v-for="post in getPostsState" :post="post" />
-    </div>
-    <div class="pagination-wrapper">
-      <button class="pagination-button" @click="setPrevPage">Prev</button>
-      <button class="pagination-button" @click="setNextPage">Next</button>
+  <div class="notes-container" v-if="notes.length">
+    <div class="note-wrapper">
+      <NoteItem
+        :key="note.id"
+        v-for="note in notes"
+        :note="note"
+        @handleUpdateItem="handleUpdateItem"
+      />
     </div>
   </div>
-  <div v-else>Loading...</div>
+  <div style="display: flex; justify-content: center" v-else>There are no notes</div>
 </template>
 
 <style scoped lang="scss">
-.posts-wrapper {
+.notes-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 20px;
-  margin: 20px 0;
 }
-.pagination-wrapper {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-}
-.pagination-button {
-  width: 60px;
-  height: 30px;
-  background-color: bisque;
-  border: 1px solid;
-  border-radius: 5px;
+.note-wrapper {
+  width: 40%;
 }
 </style>
