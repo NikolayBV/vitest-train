@@ -6,9 +6,13 @@ class LocalStorageNotesService {
     this.storage = localStorage
   }
 
-  getNotes() {
-    const storageNotes = this.storage.getItem('notes')
-    return storageNotes?.length ? (JSON.parse(storageNotes) as Note[]) : []
+  getNotes(userId: string | undefined) {
+    if (userId) {
+      const storageNotes = this.storage.getItem('notes')
+      return storageNotes?.length
+        ? (JSON.parse(storageNotes).filter((item: Note) => item.authorId === userId) as Note[])
+        : []
+    }
   }
 
   setNotes(notes: Note[]) {

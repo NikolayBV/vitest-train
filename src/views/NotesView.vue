@@ -3,12 +3,16 @@ import { defineComponent, ref, watch, watchEffect } from 'vue'
 import type { Note } from '@/utils/interfaces'
 import LocalStorageNotesService from '@/services/LocalStorageNotes.service'
 import NoteItem from '@/components/NoteItem/NoteItem.vue'
+import { useUserStore } from '@/store/user/UserStore'
+import { storeToRefs } from 'pinia'
 
 export default defineComponent({
   name: 'NotesView',
   components: { NoteItem },
   props: {},
   setup(props, ctx) {
+    const userStore = useUserStore()
+    const { getUserState } = storeToRefs(userStore)
     const storage = new LocalStorageNotesService()
     const notes = ref<Array<Note>>([])
 
@@ -28,7 +32,12 @@ export default defineComponent({
     watch(
       [notes.value],
       () => {
-        notes.value = storage.getNotes()
+        const userNotes = storage.getNotes(getUserState.value?.sub)
+        if (userNotes && userNotes.length) {
+          notes.value = userNotes
+        } else {
+          notes.value = []
+        }
       },
       { immediate: true }
     )
