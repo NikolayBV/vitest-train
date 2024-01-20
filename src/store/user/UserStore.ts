@@ -7,7 +7,6 @@ export const useUserStore = defineStore('user', () => {
   const getUserState = computed(() => user.value)
   const getUserRole = computed(() => user.value?.role)
   function setUserState(currentUser: User) {
-    console.log(currentUser)
     user.value = currentUser
   }
 

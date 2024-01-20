@@ -29,18 +29,14 @@ export default defineComponent({
       storage.deleteNote(id)
       notes.value = notes.value.filter((item) => item.id !== id)
     }
-    watch(
-      [notes.value],
-      () => {
-        const userNotes = storage.getNotes(getUserState.value?.sub)
-        if (userNotes && userNotes.length) {
-          notes.value = userNotes
-        } else {
-          notes.value = []
-        }
-      },
-      { immediate: true }
-    )
+    watchEffect(() => {
+      const userNotes = storage.getNotes(getUserState.value?.sub)
+      if (userNotes && userNotes.length) {
+        notes.value = userNotes
+      } else {
+        notes.value = []
+      }
+    })
     return { notes, handleUpdateItem, handleDeleteNote }
   }
 })
