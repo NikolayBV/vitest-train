@@ -21,10 +21,18 @@ export default defineComponent({
         }
       })
     }
-    watchEffect(() => {
-      notes.value = storage.getNotes()
-    })
-    return { notes, handleUpdateItem }
+    const handleDeleteNote = (id: number) => {
+      storage.deleteNote(id)
+      notes.value = notes.value.filter((item) => item.id !== id)
+    }
+    watch(
+      [notes.value],
+      () => {
+        notes.value = storage.getNotes()
+      },
+      { immediate: true }
+    )
+    return { notes, handleUpdateItem, handleDeleteNote }
   }
 })
 </script>
@@ -37,6 +45,7 @@ export default defineComponent({
         v-for="note in notes"
         :note="note"
         @handleUpdateItem="handleUpdateItem"
+        @handleDeleteNote="handleDeleteNote"
       />
     </div>
   </div>

@@ -50,7 +50,8 @@ export default defineComponent({
         const note = createNoteEntity({
           title,
           body,
-          author: createUserName(getUserState.value)
+          author: createUserName(getUserState.value),
+          authorId: getUserState.value?.sub
         })
         storage.setNote(note)
       }

@@ -33,15 +33,12 @@ class LocalStorageNotesService {
     }
   }
 
-  deleteNote(note: Note) {
+  deleteNote(id: number) {
     try {
       const storageNotes = this.storage.getItem('notes')
       if (storageNotes) {
         const currentNotes = JSON.parse(storageNotes) as Array<Note>
-        this.storage.setItem(
-          'notes',
-          JSON.stringify(currentNotes.filter((item) => item.id !== note.id))
-        )
+        this.storage.setItem('notes', JSON.stringify(currentNotes.filter((item) => item.id !== id)))
       }
     } catch (e) {
       console.log(e)

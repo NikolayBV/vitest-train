@@ -1,7 +1,8 @@
 export interface Note {
-  id: string
+  id: number
   createdAt: Date
   updatedAt?: Date
+  authorId: string
   author: string
   title: string
   body: string
