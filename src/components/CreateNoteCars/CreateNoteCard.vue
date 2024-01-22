@@ -4,7 +4,12 @@ import { useForm } from 'vue-hooks-form'
 import { useUserStore } from '@/store/user/UserStore'
 import { storeToRefs } from 'pinia'
 import LocalStorageNotesService from '@/services/LocalStorageNotes.service'
-import { createNoteEntity, createUserName, updateNoteEntity } from '@/utils/functions'
+import {
+  createNoteEntity,
+  createUserName,
+  isPossibleNoteBody,
+  updateNoteEntity
+} from '@/utils/functions'
 import type { Note } from '@/utils/interfaces'
 
 export default defineComponent({
@@ -42,18 +47,27 @@ export default defineComponent({
 
     function onNoteCreate(data: Record<string, any>) {
       const { title, body } = data
-      if (isEditNote && note) {
-        const updatedNote = updateNoteEntity(title, body, note)
-        emit('updatedNote', updatedNote)
-        storage.changeNote(updatedNote)
+      const isPossibleUpdateNote = isPossibleNoteBody(
+        body,
+        storage.getNotes(getUserState.value?.sub)
+      )
+      if (isPossibleUpdateNote) {
+        if (isEditNote && note) {
+          const updatedNote = updateNoteEntity(title, body, note)
+          emit('updatedNote', updatedNote)
+          storage.updateNote(updatedNote)
+        } else {
+          const note = createNoteEntity({
+            title,
+            body,
+            author: createUserName(getUserState.value),
+            authorId: getUserState.value?.sub
+          })
+          emit('createNote', note)
+          storage.setNote(note)
+        }
       } else {
-        const note = createNoteEntity({
-          title,
-          body,
-          author: createUserName(getUserState.value),
-          authorId: getUserState.value?.sub
-        })
-        storage.setNote(note)
+        alert('Заметка с таким текстом уже создана')
       }
       noteTitle.value = ''
       noteBody.value = ''
@@ -78,7 +92,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .card-wrapper {
-  width: 25%;
+  width: 40%;
   background-color: #c4b988;
   display: flex;
   flex-direction: column;
@@ -87,6 +101,7 @@ export default defineComponent({
   padding: 20px 0;
   border: 1px solid;
   border-radius: 5px;
+  margin: 20px 0 40px 0;
 }
 .input-container {
   width: 40%;
@@ -94,6 +109,6 @@ export default defineComponent({
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 10px;
 }
 </style>

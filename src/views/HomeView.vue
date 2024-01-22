@@ -6,7 +6,7 @@ import CreateNoteCard from '@/components/CreateNoteCars/CreateNoteCard.vue'
 
 export default defineComponent({
   name: 'HomeView',
-  components: { CreateNoteCard },
+  components: {},
   props: {},
   setup() {
     const store = useAuthStore()
@@ -25,7 +25,6 @@ export default defineComponent({
 <template>
   <div>
     <div class="home-container">
-      <CreateNoteCard />
       <button @click="setLogout">Logout</button>
     </div>
   </div>

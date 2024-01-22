@@ -1,4 +1,5 @@
 import type { Note } from '@/utils/interfaces'
+import { isPossibleNoteBody, sortedNotes } from '@/utils/functions'
 
 class LocalStorageNotesService {
   private storage: Storage
@@ -6,12 +7,19 @@ class LocalStorageNotesService {
     this.storage = localStorage
   }
 
-  getNotes(userId: string | undefined) {
-    if (userId) {
-      const storageNotes = this.storage.getItem('notes')
-      return storageNotes?.length
-        ? (JSON.parse(storageNotes).filter((item: Note) => item.authorId === userId) as Note[])
-        : []
+  getNotes(userId: string | undefined, userRole?: string | null) {
+    const storageNotes = this.storage.getItem('notes')
+    if (storageNotes && userId) {
+      if (userRole === 'admin') {
+        return sortedNotes(JSON.parse(storageNotes))
+      } else {
+        const userNotes = JSON.parse(storageNotes).filter(
+          (item: Note) => item.authorId === userId
+        ) as Note[]
+        return sortedNotes(userNotes)
+      }
+    } else {
+      return []
     }
   }
 
@@ -49,7 +57,7 @@ class LocalStorageNotesService {
     }
   }
 
-  changeNote(note: Note) {
+  updateNote(note: Note) {
     try {
       const storageNotes = this.storage.getItem('notes')
       if (storageNotes) {

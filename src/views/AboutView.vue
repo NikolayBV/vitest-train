@@ -16,5 +16,6 @@ export default defineComponent({
 .about-wrapper {
   display: flex;
   justify-content: center;
+  margin: 100px 0;
 }
 </style>

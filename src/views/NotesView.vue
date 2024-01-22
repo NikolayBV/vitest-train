@@ -5,39 +5,44 @@ import LocalStorageNotesService from '@/services/LocalStorageNotes.service'
 import NoteItem from '@/components/NoteItem/NoteItem.vue'
 import { useUserStore } from '@/store/user/UserStore'
 import { storeToRefs } from 'pinia'
+import { sortedNotes } from '@/utils/functions'
+import CreateNoteCard from '@/components/CreateNoteCars/CreateNoteCard.vue'
 
 export default defineComponent({
   name: 'NotesView',
-  components: { NoteItem },
+  components: { CreateNoteCard, NoteItem },
   props: {},
-  setup(props, ctx) {
+  setup() {
     const userStore = useUserStore()
     const { getUserState } = storeToRefs(userStore)
     const storage = new LocalStorageNotesService()
     const notes = ref<Array<Note>>([])
-
     const handleUpdateItem = (note: Note) => {
-      notes.value = notes.value.map((item) => {
+      const allNotes = notes.value.map((item) => {
         if (item.id === note.id) {
           return note
         } else {
           return item
         }
       })
+      notes.value = sortedNotes(allNotes)
+    }
+    const handleCreateNote = (note: Note) => {
+      notes.value = sortedNotes([...notes.value, note])
     }
     const handleDeleteNote = (id: number) => {
       storage.deleteNote(id)
       notes.value = notes.value.filter((item) => item.id !== id)
     }
     watchEffect(() => {
-      const userNotes = storage.getNotes(getUserState.value?.sub)
+      const userNotes = storage.getNotes(getUserState.value?.sub, getUserState.value?.role)
       if (userNotes && userNotes.length) {
         notes.value = userNotes
       } else {
         notes.value = []
       }
     })
-    return { notes, handleUpdateItem, handleDeleteNote }
+    return { notes, handleUpdateItem, handleDeleteNote, handleCreateNote }
   }
 })
 </script>
@@ -53,6 +58,7 @@ export default defineComponent({
         @handleDeleteNote="handleDeleteNote"
       />
     </div>
+    <CreateNoteCard @createNote="handleCreateNote" />
   </div>
   <div style="display: flex; justify-content: center" v-else>There are no notes</div>
 </template>
@@ -62,6 +68,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 50px 0;
 }
 .note-wrapper {
   width: 40%;

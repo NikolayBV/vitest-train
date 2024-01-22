@@ -6,6 +6,7 @@ import PublicRoute from '@/components/Routes/PublicRoute.vue'
 import { formatUser } from '@/utils/functions'
 import { useUserStore } from '@/store/user/UserStore'
 import { useAuthStore } from '@/store/auth/AuthStore'
+import router from '@/router'
 
 export default defineComponent({
   name: 'App',
@@ -16,11 +17,15 @@ export default defineComponent({
     const authStore = useAuthStore()
     const { isAuthenticated, isLoading, idTokenClaims, getAccessTokenSilently } = useAuth0()
     watchEffect(async () => {
-      const newValue = idTokenClaims.value
-      const userToken = await getAccessTokenSilently()
-      if (newValue && userToken) {
-        authStore.setToken(userToken)
-        userStore.setUserState(formatUser(newValue))
+      if (!isAuthenticated.value) {
+        await router.push('/login')
+      } else {
+        const newValue = idTokenClaims.value
+        const userToken = await getAccessTokenSilently()
+        if (newValue && userToken) {
+          authStore.setToken(userToken)
+          userStore.setUserState(formatUser(newValue))
+        }
       }
     })
     return { isLoading, isAuthenticated }
@@ -30,7 +35,7 @@ export default defineComponent({
 
 <template>
   <div class="app-wrapper">
-    <header>
+    <header class="header-container">
       <div class="header-wrapper">
         <nav v-if="isAuthenticated" class="nav-wrapper">
           <PrivateRoute />
@@ -53,6 +58,11 @@ export default defineComponent({
   min-height: 100%;
   display: flex;
   flex-direction: column;
+}
+.header-container {
+  width: 100%;
+  position: fixed;
+  top: 0;
 }
 .header-wrapper {
   padding: 20px;

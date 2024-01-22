@@ -33,5 +33,26 @@ export const updateNoteEntity = (newTitle: string, newBody: string, note: Note):
 }
 
 export const createUserName = (user: User | null | undefined) => {
-  return `${user?.family_name} ${user?.given_name}`
+  if (user?.family_name && user.given_name) {
+    return `${user?.family_name} ${user?.given_name}`
+  } else {
+    return user?.email
+  }
+}
+
+export const sortedNotes = (unsortedNotes: Note[]) => {
+  const updatedNotes = unsortedNotes
+    .filter((item) => item.updatedAt)
+    .sort(
+      (a, b) => new Date(String(b.updatedAt)).getTime() - new Date(String(a.updatedAt)).getTime()
+    )
+  const notUpdatedNotes = unsortedNotes.filter((item) => !item.updatedAt)
+  return [...updatedNotes, ...notUpdatedNotes]
+}
+
+export const isPossibleNoteBody = (noteBody: string, userNotes: Note[] | undefined) => {
+  if (userNotes) {
+    const findSameText = userNotes.find((item) => item.body === noteBody)
+    return !findSameText
+  }
 }

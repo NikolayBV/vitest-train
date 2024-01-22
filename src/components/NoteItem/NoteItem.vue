@@ -55,7 +55,7 @@ export default defineComponent({
     <h3>{{ note.title }}</h3>
     <p>{{ note.body }}</p>
     <p>{{ note.author }}</p>
-    <p v-show="note.updatedAt">{{ note.updatedAt }}</p>
+    <p v-show="note.updatedAt">Updated {{ new Date(String(note.updatedAt)).toLocaleString() }}</p>
     <div class="button-wrapper">
       <button v-show="isAuthorNote || isAdmin" @click="() => handleDeleteNote(note.id)">
         Delete
@@ -67,6 +67,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .post-wrapper {
+  min-height: 80px;
   display: flex;
   flex-direction: column;
   justify-content: center;
