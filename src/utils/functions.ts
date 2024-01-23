@@ -32,7 +32,7 @@ export const updateNoteEntity = (newTitle: string, newBody: string, note: Note):
   return { ...note, body: newBody, title: newTitle, updatedAt: new Date() }
 }
 
-export const createUserName = (user: User | null | undefined) => {
+export const createUserName = (user: Partial<User> | null | undefined) => {
   if (user?.family_name && user.given_name) {
     return `${user?.family_name} ${user?.given_name}`
   } else {
