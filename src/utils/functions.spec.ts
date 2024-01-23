@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import {
   createNoteEntity,
   createUserName,
@@ -7,10 +7,10 @@ import {
   sortedNotes,
   updateNoteEntity
 } from '@/utils/functions'
-import { unsortedNotes, sortNotes } from '@/utils/mocks'
+import { unsortedNotes, sortNotes, testNote } from '@/utils/mocks'
 
 describe('formatUser', () => {
-  test('formatUser return object', () => {
+  it('formatUser return object', () => {
     expect(
       formatUser({
         family_name: 'Test',
@@ -31,7 +31,7 @@ describe('formatUser', () => {
     })
   })
 
-  test('formatUser return empty object', () => {
+  it('formatUser return empty object', () => {
     expect(
       formatUser({
         family_name: '',
@@ -52,7 +52,7 @@ describe('formatUser', () => {
     })
   })
 
-  test('formatUser return admin user', () => {
+  it('formatUser return admin user', () => {
     expect(
       formatUser({
         family_name: 'Test',
@@ -76,7 +76,7 @@ describe('formatUser', () => {
 })
 
 describe('createNoteEntity', () => {
-  test('createNoteEntity should return object of note', () => {
+  it('createNoteEntity should return object of note', () => {
     expect(
       createNoteEntity({ title: 'Test', body: 'Test', author: 'Test', authorId: 'testId' })
     ).toEqual({
@@ -91,16 +91,8 @@ describe('createNoteEntity', () => {
 })
 
 describe('updateNoteEntity', () => {
-  test('updateNoteEntity should return update note', () => {
-    const note = {
-      author: 'Бабкин Николай',
-      authorId: 'google-oauth2|102483884126576221391',
-      body: 'test0',
-      createdAt: new Date('2024-01-22T10:05:43.638Z'),
-      id: 1705917943638,
-      title: 'test0'
-    }
-    expect(updateNoteEntity('newTitle', 'newBody', note)).toEqual({
+  it('updateNoteEntity should return update note', () => {
+    expect(updateNoteEntity('newTitle', 'newBody', testNote)).toEqual({
       author: 'Бабкин Николай',
       authorId: 'google-oauth2|102483884126576221391',
       body: 'newBody',
@@ -113,22 +105,22 @@ describe('updateNoteEntity', () => {
 })
 
 describe('createUserName', () => {
-  test('createUserName should return full name', () => {
+  it('createUserName should return full name', () => {
     expect(createUserName({ family_name: 'Nikolai', given_name: 'Babkin' })).toBe('Nikolai Babkin')
   })
 })
 
 describe('sortedNotes', () => {
-  test('sortedNotes should sorted notes', () => {
+  it('sortedNotes should sorted notes', () => {
     expect(sortedNotes(unsortedNotes)).toEqual(sortNotes)
   })
 })
 
 describe('isPossibleNoteBody', () => {
-  test('isPossibleNoteBody should return false value', () => {
+  it('isPossibleNoteBody should return false value', () => {
     expect(isPossibleNoteBody('test1', unsortedNotes)).toBe(false)
   })
-  test('isPossibleNoteBody should return true value', () => {
+  it('isPossibleNoteBody should return true value', () => {
     expect(isPossibleNoteBody('test3', unsortedNotes)).toBe(true)
   })
 })

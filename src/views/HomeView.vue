@@ -2,7 +2,6 @@
 import { defineComponent } from 'vue'
 import { useAuth0 } from '@auth0/auth0-vue'
 import { useAuthStore } from '@/store/auth/AuthStore'
-import CreateNoteCard from '@/components/CreateNoteCars/CreateNoteCard.vue'
 
 export default defineComponent({
   name: 'HomeView',

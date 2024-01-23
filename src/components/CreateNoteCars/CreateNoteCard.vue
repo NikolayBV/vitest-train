@@ -24,14 +24,14 @@ export default defineComponent({
       required: false
     }
   },
-  setup({ note, isEditNote }, { emit }) {
+  setup(props, { emit }) {
     const storage = new LocalStorageNotesService()
     const userStore = useUserStore()
     const { getUserState } = storeToRefs(userStore)
     const { useField, handleSubmit } = useForm({
       defaultValues: {
-        title: note?.title || '',
-        body: note?.body || ''
+        title: props.note?.title,
+        body: props.note?.body
       }
     })
     const noteTitle = useField('title', {
@@ -78,7 +78,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="card-wrapper">
+  <div class="card-wrapper" data-test="card">
     <p>Create Post</p>
     <form @submit="onSubmit" class="input-container">
       <input v-model="noteTitle.value" placeholder="title" :ref="noteTitle.ref" />
