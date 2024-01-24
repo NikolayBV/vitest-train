@@ -20,7 +20,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div @click="handleClose" class="modal-container">
+  <div @click="handleClose" class="modal-container" data-test="modalLayout-container">
     <slot></slot>
   </div>
 </template>

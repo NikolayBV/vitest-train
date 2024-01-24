@@ -52,8 +52,8 @@ export default defineComponent({
         storage.getNotes(getUserState.value?.sub)
       )
       if (isPossibleUpdateNote) {
-        if (isEditNote && note) {
-          const updatedNote = updateNoteEntity(title, body, note)
+        if (props.isEditNote && props.note) {
+          const updatedNote = updateNoteEntity(title, body, props.note)
           emit('updatedNote', updatedNote)
           storage.updateNote(updatedNote)
         } else {
@@ -79,7 +79,7 @@ export default defineComponent({
 
 <template>
   <div class="card-wrapper" data-test="card">
-    <p>Create Post</p>
+    <p>Create Note</p>
     <form @submit="onSubmit" class="input-container">
       <input v-model="noteTitle.value" placeholder="title" :ref="noteTitle.ref" />
       <p v-if="noteTitle.error">This field is required</p>

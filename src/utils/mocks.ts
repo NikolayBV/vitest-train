@@ -63,11 +63,3 @@ export const testNote = {
   id: 1705917943638,
   title: 'test0'
 }
-
-vi.mock('vue-hooks-form', async (importOriginal) => {
-  return {
-    useForm: {
-      useField: vi.fn()
-    }
-  }
-})
