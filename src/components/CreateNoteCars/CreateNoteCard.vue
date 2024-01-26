@@ -1,3 +1,16 @@
+<template>
+  <div class="card-wrapper" data-test="card">
+    <p>Create Note</p>
+    <form @submit="onSubmit" class="input-container" data-test="input-container">
+      <input v-model="noteTitle.value" placeholder="title" :ref="noteTitle.ref" />
+      <p v-if="noteTitle.error">This field is required</p>
+      <input v-model="noteBody.value" placeholder="body" :ref="noteBody.ref" />
+      <p v-if="noteBody.error">This field is required</p>
+      <button type="submit">Create Note</button>
+    </form>
+  </div>
+</template>
+
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue'
 import { useForm } from 'vue-hooks-form'
@@ -76,19 +89,6 @@ export default defineComponent({
   }
 })
 </script>
-
-<template>
-  <div class="card-wrapper" data-test="card">
-    <p>Create Note</p>
-    <form @submit="onSubmit" class="input-container">
-      <input v-model="noteTitle.value" placeholder="title" :ref="noteTitle.ref" />
-      <p v-if="noteTitle.error">This field is required</p>
-      <input v-model="noteBody.value" placeholder="body" :ref="noteBody.ref" />
-      <p v-if="noteBody.error">This field is required</p>
-      <button type="submit">Create Note</button>
-    </form>
-  </div>
-</template>
 
 <style scoped lang="scss">
 .card-wrapper {
