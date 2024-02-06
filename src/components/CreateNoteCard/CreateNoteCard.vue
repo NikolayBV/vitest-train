@@ -1,19 +1,20 @@
 <template>
   <div class="card-wrapper" data-test="card">
     <p>Create Note</p>
-    <form @submit="onSubmit" class="input-container" data-test="input-container">
-      <input v-model="noteTitle.value" placeholder="title" :ref="noteTitle.ref" />
-      <p v-if="noteTitle.error">This field is required</p>
-      <input v-model="noteBody.value" placeholder="body" :ref="noteBody.ref" />
-      <p v-if="noteBody.error">This field is required</p>
-      <button type="submit">Create Note</button>
+    <form @submit.prevent="onSubmit" class="input-container" data-test="input-container">
+      <input v-model="noteTitle.text" placeholder="title" data-test="input-title" />
+      <p data-test="error-title" v-if="noteTitle.isError">This field is required</p>
+      <input v-model="noteBody.text" placeholder="body" data-test="input-body" />
+      <p data-test="error-body" v-if="noteBody.isError">This field is required</p>
+      <button :disabled="noteTitle.isError || noteBody.isError" type="submit" data-test="button">
+        Create Note
+      </button>
     </form>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue'
-import { useForm } from 'vue-hooks-form'
+import { defineComponent, type PropType, ref, watch } from 'vue'
 import { useUserStore } from '@/store/user/UserStore'
 import { storeToRefs } from 'pinia'
 import LocalStorageNotesService from '@/services/LocalStorageNotes.service'
@@ -41,25 +42,25 @@ export default defineComponent({
     const storage = new LocalStorageNotesService()
     const userStore = useUserStore()
     const { getUserState } = storeToRefs(userStore)
-    const { useField, handleSubmit } = useForm({
-      defaultValues: {
-        title: props.note?.title,
-        body: props.note?.body
-      }
+    const noteTitle = ref({
+      text: props.note?.title || '',
+      isError: true
     })
-    const noteTitle = useField('title', {
-      rule: { required: true }
-    })
-    const noteBody = useField('body', {
-      rule: {
-        required: true,
-        min: 1,
-        max: 100
-      }
+    const noteBody = ref({
+      text: props.note?.body || '',
+      isError: true
     })
 
-    function onNoteCreate(data: Record<string, any>) {
-      const { title, body } = data
+    watch(noteBody.value, () => {
+      noteBody.value.isError = !noteBody.value.text.length
+    })
+    watch(noteTitle.value, () => {
+      noteTitle.value.isError = !noteTitle.value.text.length
+    })
+
+    function onNoteCreate() {
+      const title = noteTitle.value.text
+      const body = noteBody.value.text
       const isPossibleUpdateNote = isPossibleNoteBody(
         body,
         storage.getNotes(getUserState.value?.sub)
@@ -82,10 +83,10 @@ export default defineComponent({
       } else {
         alert('Заметка с таким текстом уже создана')
       }
-      noteTitle.value = ''
-      noteBody.value = ''
+      noteTitle.value.text = ''
+      noteBody.value.text = ''
     }
-    return { noteTitle, noteBody, onSubmit: handleSubmit(onNoteCreate) }
+    return { noteTitle, noteBody, onSubmit: onNoteCreate }
   }
 })
 </script>

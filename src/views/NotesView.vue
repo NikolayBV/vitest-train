@@ -6,7 +6,7 @@ import NoteItem from '@/components/NoteItem/NoteItem.vue'
 import { useUserStore } from '@/store/user/UserStore'
 import { storeToRefs } from 'pinia'
 import { sortedNotes } from '@/utils/functions'
-import CreateNoteCard from '@/components/CreateNoteCars/CreateNoteCard.vue'
+import CreateNoteCard from '@/components/CreateNoteCard/CreateNoteCard.vue'
 
 export default defineComponent({
   name: 'NotesView',
@@ -48,8 +48,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="notes-container" v-if="notes.length">
-    <div class="note-wrapper">
+  <div class="notes-container">
+    <div class="note-wrapper" v-if="notes.length">
       <NoteItem
         :key="note.id"
         v-for="note in notes"
@@ -58,9 +58,9 @@ export default defineComponent({
         @handleDeleteNote="handleDeleteNote"
       />
     </div>
+    <div style="display: flex; justify-content: center" v-else>There are no notes</div>
     <CreateNoteCard @createNote="handleCreateNote" />
   </div>
-  <div style="display: flex; justify-content: center" v-else>There are no notes</div>
 </template>
 
 <style scoped lang="scss">
@@ -68,7 +68,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 50px 0;
+  margin: 70px 0;
 }
 .note-wrapper {
   width: 40%;

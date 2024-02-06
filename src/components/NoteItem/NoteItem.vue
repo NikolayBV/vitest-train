@@ -2,7 +2,7 @@
 import { defineComponent, type PropType, ref, watchEffect } from 'vue'
 import type { Note } from '@/utils/interfaces'
 import ModalLayout from '@/components/ModalLayout/ModalLayout.vue'
-import CreateNoteCard from '@/components/CreateNoteCars/CreateNoteCard.vue'
+import CreateNoteCard from '@/components/CreateNoteCard/CreateNoteCard.vue'
 import { useUserStore } from '@/store/user/UserStore'
 import { storeToRefs } from 'pinia'
 
@@ -52,12 +52,18 @@ export default defineComponent({
     <CreateNoteCard @click.stop :note="note" :is-edit-note="true" @updatedNote="handleUpdateItem" />
   </ModalLayout>
   <div class="post-wrapper">
-    <h3>{{ note.title }}</h3>
-    <p>{{ note.body }}</p>
-    <p>{{ note.author }}</p>
-    <p v-show="note.updatedAt">Updated {{ new Date(String(note.updatedAt)).toLocaleString() }}</p>
+    <h3 data-test="note-title">{{ note.title }}</h3>
+    <p data-test="note-body">{{ note.body }}</p>
+    <p data-test="note-author">{{ note.author }}</p>
+    <p data-test="note-updatedAt" v-show="note.updatedAt">
+      Updated {{ new Date(String(note.updatedAt)).toLocaleString() }}
+    </p>
     <div class="button-wrapper">
-      <button v-show="isAuthorNote || isAdmin" @click="() => handleDeleteNote(note.id)">
+      <button
+        data-test="button-delete"
+        v-show="isAuthorNote || isAdmin"
+        @click="() => handleDeleteNote(note.id)"
+      >
         Delete
       </button>
       <button v-show="isAuthorNote" @click="changeModalState">Edit</button>
