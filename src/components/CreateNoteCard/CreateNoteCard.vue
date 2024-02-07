@@ -6,7 +6,11 @@
       <p data-test="error-title" v-if="noteTitle.isError">This field is required</p>
       <input v-model="noteBody.text" placeholder="body" data-test="input-body" />
       <p data-test="error-body" v-if="noteBody.isError">This field is required</p>
-      <button :disabled="noteTitle.isError || noteBody.isError" type="submit" data-test="button">
+      <button
+        :disabled="(noteTitle.isError || noteBody.isError) && !isEditNote"
+        type="submit"
+        data-test="button"
+      >
         Create Note
       </button>
     </form>
