@@ -1,10 +1,10 @@
 import type { Note } from '@/utils/interfaces'
-import { isPossibleNoteBody, sortedNotes } from '@/utils/functions'
+import { sortedNotes } from '@/utils/functions'
 
 class LocalStorageNotesService {
   private storage: Storage
-  constructor() {
-    this.storage = localStorage
+  constructor(storage: Storage) {
+    this.storage = storage
   }
 
   getNotes(userId: string | undefined, userRole?: string | null) {

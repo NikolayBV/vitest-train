@@ -24,7 +24,7 @@ export default defineComponent({
 <template>
   <div>
     <div class="home-container">
-      <button @click="setLogout">Logout</button>
+      <button data-test="logout-button" @click="setLogout">Logout</button>
     </div>
   </div>
 </template>

@@ -29,7 +29,7 @@ export default defineComponent({
 
 <template>
   <div class="login-wrapper">
-    <button @click="login">Login</button>
+    <button data-test="login-button" @click="login">Login</button>
   </div>
 </template>
 

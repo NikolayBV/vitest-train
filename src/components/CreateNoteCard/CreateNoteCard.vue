@@ -38,8 +38,9 @@ export default defineComponent({
       required: false
     }
   },
+  emits: ['updatedNote', 'createNote'],
   setup(props, { emit }) {
-    const storage = new LocalStorageNotesService()
+    const storage = new LocalStorageNotesService(localStorage)
     const userStore = useUserStore()
     const { getUserState } = storeToRefs(userStore)
     const noteTitle = ref({
@@ -75,7 +76,9 @@ export default defineComponent({
             title,
             body,
             author: createUserName(getUserState.value),
-            authorId: getUserState.value?.sub
+            authorId: getUserState.value?.sub,
+            id: new Date().getTime(),
+            createdAt: new Date()
           })
           emit('createNote', note)
           storage.setNote(note)

@@ -17,14 +17,14 @@ export const formatUser = ({
   sub
 })
 
-export const createNoteEntity = ({ title, body, author, authorId }: Partial<Note>): Note => {
+export const createNoteEntity = ({ title, body, author, authorId, id, createdAt }: Note): Note => {
   return {
-    title: title || '',
-    body: body || '',
-    author: author || '',
-    authorId: authorId || '',
-    id: new Date().getTime(),
-    createdAt: new Date()
+    title: title,
+    body: body,
+    author: author,
+    authorId: authorId,
+    id: id,
+    createdAt: createdAt
   }
 }
 

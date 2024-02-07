@@ -78,21 +78,28 @@ describe('formatUser', () => {
 describe('createNoteEntity', () => {
   it('createNoteEntity should return object of note', () => {
     expect(
-      createNoteEntity({ title: 'Test', body: 'Test', author: 'Test', authorId: 'testId' })
-    ).toEqual({
+      createNoteEntity({
+        title: 'Test',
+        body: 'Test',
+        author: 'Test',
+        authorId: 'testId',
+        id: new Date('2024-01-22T10:05:43.638Z').getTime(),
+        createdAt: new Date('2024-01-22T10:05:43.638Z')
+      })
+    ).toMatchObject({
       title: 'Test',
       body: 'Test',
       author: 'Test',
       authorId: 'testId',
-      createdAt: new Date(),
-      id: new Date().getTime()
+      createdAt: new Date('2024-01-22T10:05:43.638Z'),
+      id: new Date('2024-01-22T10:05:43.638Z').getTime()
     })
   })
 })
 
 describe('updateNoteEntity', () => {
   it('updateNoteEntity should return update note', () => {
-    expect(updateNoteEntity('newTitle', 'newBody', testNote)).toEqual({
+    expect(updateNoteEntity('newTitle', 'newBody', testNote)).toStrictEqual({
       author: 'Бабкин Николай',
       authorId: 'google-oauth2|102483884126576221391',
       body: 'newBody',

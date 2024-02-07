@@ -14,8 +14,8 @@ export default defineComponent({
   props: {},
   setup() {
     const userStore = useUserStore()
-    const { getUserState } = storeToRefs(userStore)
-    const storage = new LocalStorageNotesService()
+    const { getUserState, getUserRole } = storeToRefs(userStore)
+    const storage = new LocalStorageNotesService(localStorage)
     const notes = ref<Array<Note>>([])
     const handleUpdateItem = (note: Note) => {
       const allNotes = notes.value.map((item) => {
@@ -42,7 +42,14 @@ export default defineComponent({
         notes.value = []
       }
     })
-    return { notes, handleUpdateItem, handleDeleteNote, handleCreateNote }
+    return {
+      notes,
+      handleUpdateItem,
+      handleDeleteNote,
+      handleCreateNote,
+      getUserState,
+      getUserRole
+    }
   }
 })
 </script>
@@ -53,6 +60,8 @@ export default defineComponent({
       <NoteItem
         :key="note.id"
         v-for="note in notes"
+        :is-author-note="note.authorId === getUserState?.sub"
+        :is-admin="getUserRole === 'admin'"
         :note="note"
         @handleUpdateItem="handleUpdateItem"
         @handleDeleteNote="handleDeleteNote"

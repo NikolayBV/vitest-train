@@ -1,26 +1,28 @@
 <script lang="ts">
-import { defineComponent, type PropType, ref, watchEffect } from 'vue'
+import { defineComponent, type PropType, ref } from 'vue'
 import type { Note } from '@/utils/interfaces'
 import ModalLayout from '@/components/ModalLayout/ModalLayout.vue'
 import CreateNoteCard from '@/components/CreateNoteCard/CreateNoteCard.vue'
-import { useUserStore } from '@/store/user/UserStore'
-import { storeToRefs } from 'pinia'
 
 export default defineComponent({
   name: 'NoteItem',
   components: { CreateNoteCard, ModalLayout },
   emits: ['handleUpdateItem', 'handleDeleteNote'],
   props: {
+    isAuthorNote: {
+      type: Boolean,
+      required: true
+    },
+    isAdmin: {
+      type: Boolean,
+      required: true
+    },
     note: {
       type: Object as PropType<Note>,
       required: true
     }
   },
-  setup(props, { emit }) {
-    const userStore = useUserStore()
-    const { getUserState, getUserRole } = storeToRefs(userStore)
-    const isAuthorNote = ref()
-    const isAdmin = ref()
+  setup(_, { emit }) {
     const isEditModal = ref<boolean>(false)
     const changeModalState = () => {
       isEditModal.value = !isEditModal.value
@@ -31,17 +33,11 @@ export default defineComponent({
     const handleDeleteNote = (id: number) => {
       emit('handleDeleteNote', id)
     }
-    watchEffect(() => {
-      isAuthorNote.value = props.note.authorId === getUserState.value?.sub
-      isAdmin.value = getUserRole.value === 'admin'
-    })
     return {
       isEditModal,
       changeModalState,
       handleUpdateItem,
-      handleDeleteNote,
-      isAuthorNote,
-      isAdmin
+      handleDeleteNote
     }
   }
 })
@@ -66,7 +62,7 @@ export default defineComponent({
       >
         Delete
       </button>
-      <button v-show="isAuthorNote" @click="changeModalState">Edit</button>
+      <button data-test="button-edit" v-show="isAuthorNote" @click="changeModalState">Edit</button>
     </div>
   </div>
 </template>

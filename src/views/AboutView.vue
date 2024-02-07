@@ -9,7 +9,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="about-wrapper">Lox</div>
+  <div class="about-wrapper">About</div>
 </template>
 
 <style scoped lang="scss">
