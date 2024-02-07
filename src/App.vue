@@ -1,16 +1,16 @@
 <script lang="ts">
-import { defineComponent, ref, watch, watchEffect } from 'vue'
+import { defineComponent, watchEffect } from 'vue'
 import { useAuth0 } from '@auth0/auth0-vue'
-import PrivateRoute from '@/components/Routes/PrivateRoute.vue'
-import PublicRoute from '@/components/Routes/PublicRoute.vue'
 import { formatUser } from '@/utils/functions'
 import { useUserStore } from '@/store/user/UserStore'
 import { useAuthStore } from '@/store/auth/AuthStore'
 import router from '@/router'
+import AuthLayout from '@/components/AuthLayout/AuthLayout.vue'
+import LoginLayout from '@/components/LoginLayout/LoginLayout.vue'
 
 export default defineComponent({
   name: 'App',
-  components: { PublicRoute, PrivateRoute },
+  components: { LoginLayout, AuthLayout },
   props: {},
   setup() {
     const userStore = useUserStore()
@@ -34,23 +34,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="app-wrapper">
-    <header class="header-container">
-      <div class="header-wrapper">
-        <nav v-if="isAuthenticated" class="nav-wrapper">
-          <PrivateRoute />
-        </nav>
-        <nav v-else class="nav-wrapper">
-          <PublicRoute />
-        </nav>
-      </div>
-    </header>
-    <div>
-      <RouterView v-if="!isLoading" />
-      <div style="display: flex; justify-content: center" v-else>Loading...</div>
-    </div>
-    <footer class="footer">Vue Test app</footer>
-  </div>
+  <LoginLayout v-if="isAuthenticated" :is-loading="isLoading" />
+  <AuthLayout v-else :is-loading="isLoading" />
 </template>
 
 <style scoped lang="scss">
