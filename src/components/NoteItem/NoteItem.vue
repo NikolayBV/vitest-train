@@ -1,48 +1,3 @@
-<script lang="ts">
-import { defineComponent, type PropType, ref } from 'vue'
-import type { Note } from '@/utils/interfaces'
-import ModalLayout from '@/components/ModalLayout/ModalLayout.vue'
-import CreateNoteCard from '@/components/CreateNoteCard/CreateNoteCard.vue'
-
-export default defineComponent({
-  name: 'NoteItem',
-  components: { CreateNoteCard, ModalLayout },
-  emits: ['handleUpdateItem', 'handleDeleteNote'],
-  props: {
-    isAuthorNote: {
-      type: Boolean,
-      required: true
-    },
-    isAdmin: {
-      type: Boolean,
-      required: true
-    },
-    note: {
-      type: Object as PropType<Note>,
-      required: true
-    }
-  },
-  setup(_, { emit }) {
-    const isEditModal = ref<boolean>(false)
-    const changeModalState = () => {
-      isEditModal.value = !isEditModal.value
-    }
-    const handleUpdateItem = (note: Note) => {
-      emit('handleUpdateItem', note)
-    }
-    const handleDeleteNote = (id: number) => {
-      emit('handleDeleteNote', id)
-    }
-    return {
-      isEditModal,
-      changeModalState,
-      handleUpdateItem,
-      handleDeleteNote
-    }
-  }
-})
-</script>
-
 <template>
   <ModalLayout :close-modal="changeModalState" v-show="isEditModal">
     <CreateNoteCard @click.stop :note="note" :is-edit-note="true" @updatedNote="handleUpdateItem" />
@@ -66,6 +21,52 @@ export default defineComponent({
     </div>
   </div>
 </template>
+
+<script lang="ts">
+import { defineComponent, type PropType, ref } from 'vue'
+import type { Note } from '@/utils/interfaces'
+import ModalLayout from '@/components/ModalLayout/ModalLayout.vue'
+import CreateNoteCard from '@/components/CreateNoteCard/CreateNoteCard.vue'
+import { EMITS } from '@/utils/constants'
+
+export default defineComponent({
+  name: 'NoteItem',
+  components: { CreateNoteCard, ModalLayout },
+  emits: [EMITS.HANDLE_UPDATE_NOTE, EMITS.HANDLE_DELETE_NOTE],
+  props: {
+    isAuthorNote: {
+      type: Boolean,
+      required: true
+    },
+    isAdmin: {
+      type: Boolean,
+      required: true
+    },
+    note: {
+      type: Object as PropType<Note>,
+      required: true
+    }
+  },
+  setup(_, { emit }) {
+    const isEditModal = ref<boolean>(false)
+    const changeModalState = () => {
+      isEditModal.value = !isEditModal.value
+    }
+    const handleUpdateNote = (note: Note) => {
+      emit(EMITS.HANDLE_UPDATE_NOTE, note)
+    }
+    const handleDeleteNote = (id: number) => {
+      emit(EMITS.HANDLE_DELETE_NOTE, id)
+    }
+    return {
+      isEditModal,
+      changeModalState,
+      handleUpdateItem: handleUpdateNote,
+      handleDeleteNote
+    }
+  }
+})
+</script>
 
 <style scoped lang="scss">
 .post-wrapper {

@@ -40,7 +40,7 @@ export const createUserName = (user: Partial<User> | null | undefined) => {
   }
 }
 
-export const sortedNotes = (unsortedNotes: Note[]) => {
+export const sortedNotes = (unsortedNotes: Note[]): Note[] => {
   const updatedNotes = unsortedNotes
     .filter((item) => item.updatedAt)
     .sort(
@@ -50,7 +50,10 @@ export const sortedNotes = (unsortedNotes: Note[]) => {
   return [...updatedNotes, ...notUpdatedNotes]
 }
 
-export const isPossibleNoteBody = (noteBody: string, userNotes: Note[] | undefined) => {
+export const isPossibleNoteBody = (
+  noteBody: string,
+  userNotes: Note[] | undefined
+): boolean | undefined => {
   if (userNotes) {
     const findSameText = userNotes.find((item) => item.body === noteBody)
     return !findSameText

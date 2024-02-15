@@ -1,3 +1,8 @@
+<template>
+  <LoginLayout v-if="isAuthenticated" :is-loading="isLoading" />
+  <AuthLayout v-else :is-loading="isLoading" />
+</template>
+
 <script lang="ts">
 import { defineComponent, watchEffect } from 'vue'
 import { useAuth0 } from '@auth0/auth0-vue'
@@ -11,7 +16,6 @@ import LoginLayout from '@/components/LoginLayout/LoginLayout.vue'
 export default defineComponent({
   name: 'App',
   components: { LoginLayout, AuthLayout },
-  props: {},
   setup() {
     const userStore = useUserStore()
     const authStore = useAuthStore()
@@ -32,11 +36,6 @@ export default defineComponent({
   }
 })
 </script>
-
-<template>
-  <LoginLayout v-if="isAuthenticated" :is-loading="isLoading" />
-  <AuthLayout v-else :is-loading="isLoading" />
-</template>
 
 <style scoped lang="scss">
 .app-wrapper {

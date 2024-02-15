@@ -1,21 +1,3 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
-import PublicRoute from '@/components/Routes/PublicRoute.vue'
-import PrivateRoute from '@/components/Routes/PrivateRoute.vue'
-
-export default defineComponent({
-  name: 'LoginLayout',
-  components: { PrivateRoute },
-  props: {
-    isLoading: {
-      types: Boolean,
-      required: true
-    }
-  },
-  setup() {}
-})
-</script>
-
 <template>
   <div class="app-wrapper">
     <header class="header-container">
@@ -26,13 +8,29 @@ export default defineComponent({
       </div>
     </header>
     <div>
-      <RouterView v-if="!isLoading" />
-      <div style="display: flex; justify-content: center" v-else>Loading...</div>
+      <div v-if="isLoading" style="display: flex; justify-content: center">Loading...</div>
+      <RouterView v-else />
     </div>
     <footer class="footer">Vue Test app</footer>
   </div>
   >
 </template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+import PrivateRoute from '@/components/Routes/PrivateRoute.vue'
+
+export default defineComponent({
+  name: 'LoginLayout',
+  components: { PrivateRoute },
+  props: {
+    isLoading: {
+      types: Boolean,
+      required: true
+    }
+  }
+})
+</script>
 
 <style scoped lang="scss">
 .app-wrapper {

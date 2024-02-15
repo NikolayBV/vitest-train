@@ -1,5 +1,23 @@
+<template>
+  <div class="notes-container">
+    <div class="note-wrapper" v-if="notes.length">
+      <NoteItem
+        :key="note.id"
+        v-for="note in notes"
+        :is-author-note="note.authorId === getUserState?.sub"
+        :is-admin="getUserRole === ROLES.ADMIN"
+        :note="note"
+        @handleUpdateItem="handleUpdateItem"
+        @handleDeleteNote="handleDeleteNote"
+      />
+    </div>
+    <div style="display: flex; justify-content: center" v-else>There are no notes</div>
+    <CreateNoteCard @createNote="handleCreateNote" />
+  </div>
+</template>
+
 <script lang="ts">
-import { defineComponent, ref, watch, watchEffect } from 'vue'
+import { defineComponent, ref, watchEffect } from 'vue'
 import type { Note } from '@/utils/interfaces'
 import LocalStorageNotesService from '@/services/LocalStorageNotes.service'
 import NoteItem from '@/components/NoteItem/NoteItem.vue'
@@ -7,11 +25,16 @@ import { useUserStore } from '@/store/user/UserStore'
 import { storeToRefs } from 'pinia'
 import { sortedNotes } from '@/utils/functions'
 import CreateNoteCard from '@/components/CreateNoteCard/CreateNoteCard.vue'
+import { ROLES } from '@/utils/constants'
 
 export default defineComponent({
   name: 'NotesView',
+  computed: {
+    ROLES() {
+      return ROLES
+    }
+  },
   components: { CreateNoteCard, NoteItem },
-  props: {},
   setup() {
     const userStore = useUserStore()
     const { getUserState, getUserRole } = storeToRefs(userStore)
@@ -53,24 +76,6 @@ export default defineComponent({
   }
 })
 </script>
-
-<template>
-  <div class="notes-container">
-    <div class="note-wrapper" v-if="notes.length">
-      <NoteItem
-        :key="note.id"
-        v-for="note in notes"
-        :is-author-note="note.authorId === getUserState?.sub"
-        :is-admin="getUserRole === 'admin'"
-        :note="note"
-        @handleUpdateItem="handleUpdateItem"
-        @handleDeleteNote="handleDeleteNote"
-      />
-    </div>
-    <div style="display: flex; justify-content: center" v-else>There are no notes</div>
-    <CreateNoteCard @createNote="handleCreateNote" />
-  </div>
-</template>
 
 <style scoped lang="scss">
 .notes-container {

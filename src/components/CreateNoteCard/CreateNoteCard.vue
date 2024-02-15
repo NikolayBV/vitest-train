@@ -29,6 +29,7 @@ import {
   updateNoteEntity
 } from '@/utils/functions'
 import type { Note } from '@/utils/interfaces'
+import { COMMON_TEXT, EMITS } from '@/utils/constants'
 
 export default defineComponent({
   name: 'CreateNoteCard',
@@ -42,7 +43,7 @@ export default defineComponent({
       required: false
     }
   },
-  emits: ['updatedNote', 'createNote'],
+  emits: [EMITS.UPDATE_NOTE, EMITS.CREATE_NOTE],
   setup(props, { emit }) {
     const storage = new LocalStorageNotesService(localStorage)
     const userStore = useUserStore()
@@ -73,22 +74,22 @@ export default defineComponent({
       if (isPossibleUpdateNote) {
         if (props.isEditNote && props.note) {
           const updatedNote = updateNoteEntity(title, body, props.note)
-          emit('updatedNote', updatedNote)
+          emit(EMITS.UPDATE_NOTE, updatedNote)
           storage.updateNote(updatedNote)
         } else {
           const note = createNoteEntity({
             title,
             body,
-            author: createUserName(getUserState.value),
-            authorId: getUserState.value?.sub,
+            author: createUserName(getUserState.value) as string,
+            authorId: getUserState.value?.sub as string,
             id: new Date().getTime(),
             createdAt: new Date()
           })
-          emit('createNote', note)
+          emit(EMITS.CREATE_NOTE, note)
           storage.setNote(note)
         }
       } else {
-        alert('Заметка с таким текстом уже создана')
+        alert(COMMON_TEXT.NOTES_HAS_BEEN_CREATED)
       }
       noteTitle.value.text = ''
       noteBody.value.text = ''

@@ -1,3 +1,20 @@
+<template>
+  <div class="app-wrapper">
+    <header class="header-container">
+      <div class="header-wrapper">
+        <nav class="nav-wrapper">
+          <public-route />
+        </nav>
+      </div>
+    </header>
+    <div>
+      <div style="display: flex; justify-content: center" v-if="isLoading">Loading...</div>
+      <router-view v-else />
+    </div>
+    <footer class="footer">Vue Test app</footer>
+  </div>
+</template>
+
 <script lang="ts">
 import { defineComponent } from 'vue'
 import PublicRoute from '@/components/Routes/PublicRoute.vue'
@@ -10,28 +27,9 @@ export default defineComponent({
       types: Boolean,
       required: true
     }
-  },
-  setup() {}
+  }
 })
 </script>
-
-<template>
-  <div class="app-wrapper">
-    <header class="header-container">
-      <div class="header-wrapper">
-        <nav class="nav-wrapper">
-          <PublicRoute />
-        </nav>
-      </div>
-    </header>
-    <div>
-      <RouterView v-if="!isLoading" />
-      <div style="display: flex; justify-content: center" v-else>Loading...</div>
-    </div>
-    <footer class="footer">Vue Test app</footer>
-  </div>
-  >
-</template>
 
 <style scoped lang="scss">
 .app-wrapper {
