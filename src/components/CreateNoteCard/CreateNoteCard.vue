@@ -1,7 +1,7 @@
 <template>
-  <div class="card-wrapper" data-test="card">
+  <div class="card" data-test="card">
     <p>Create Note</p>
-    <form @submit.prevent="onSubmit" class="input-container" data-test="input-container">
+    <form class="form" @submit.prevent="onSubmit" data-test="input-container">
       <input v-model="noteTitle.text" placeholder="title" data-test="input-title" />
       <p data-test="error-title" v-if="noteTitle.isError">This field is required</p>
       <input v-model="noteBody.text" placeholder="body" data-test="input-body" />
@@ -100,7 +100,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.card-wrapper {
+.card {
   width: 40%;
   background-color: #c4b988;
   display: flex;
@@ -112,7 +112,7 @@ export default defineComponent({
   border-radius: 5px;
   margin: 20px 0 40px 0;
 }
-.input-container {
+.form {
   width: 40%;
   display: flex;
   flex-direction: column;

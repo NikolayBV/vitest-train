@@ -1,30 +1,35 @@
 <template>
-  <div class="app-wrapper">
-    <header class="header-container">
-      <div class="header-wrapper">
-        <nav class="nav-wrapper">
-          <PrivateRoute />
+  <div class="layout">
+    <header class="header">
+      <div class="header__container">
+        <nav>
+          <private-route v-if="isAuthenticated" />
+          <public-route v-else />
         </nav>
       </div>
     </header>
     <div>
-      <div v-if="isLoading" style="display: flex; justify-content: center">Loading...</div>
-      <RouterView v-else />
+      <div class="loading" v-if="isLoading">Loading...</div>
+      <slot />
     </div>
     <footer class="footer">Vue Test app</footer>
   </div>
-  >
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import PublicRoute from '@/components/Routes/PublicRoute.vue'
 import PrivateRoute from '@/components/Routes/PrivateRoute.vue'
 
 export default defineComponent({
-  name: 'LoginLayout',
-  components: { PrivateRoute },
+  name: 'MainLayout',
+  components: { PrivateRoute, PublicRoute },
   props: {
     isLoading: {
+      types: Boolean,
+      required: true
+    },
+    isAuthenticated: {
       types: Boolean,
       required: true
     }
@@ -33,26 +38,25 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.app-wrapper {
+.layout {
   min-height: 100%;
   display: flex;
   flex-direction: column;
 }
-.header-container {
+.header {
   width: 100%;
   position: fixed;
   top: 0;
+  .header__container {
+    height: 60px;
+    padding: 20px;
+    background-color: bisque;
+    border-bottom: 1px solid;
+  }
 }
-.header-wrapper {
-  padding: 20px;
-  background-color: bisque;
-  border-bottom: 1px solid;
-}
-.nav-wrapper {
+.loading {
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 20px;
 }
 .footer {
   padding: 10px;

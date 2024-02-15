@@ -1,6 +1,7 @@
 <template>
-  <LoginLayout v-if="isAuthenticated" :is-loading="isLoading" />
-  <AuthLayout v-else :is-loading="isLoading" />
+  <main-layout :is-loading="isLoading" :is-authenticated="isAuthenticated">
+    <router-view />
+  </main-layout>
 </template>
 
 <script lang="ts">
@@ -10,12 +11,11 @@ import { formatUser } from '@/utils/functions'
 import { useUserStore } from '@/store/user/UserStore'
 import { useAuthStore } from '@/store/auth/AuthStore'
 import router from '@/router'
-import AuthLayout from '@/components/AuthLayout/AuthLayout.vue'
-import LoginLayout from '@/components/LoginLayout/LoginLayout.vue'
+import MainLayout from '@/components/MainLayout/MainLayout.vue'
 
 export default defineComponent({
   name: 'App',
-  components: { LoginLayout, AuthLayout },
+  components: { MainLayout },
   setup() {
     const userStore = useUserStore()
     const authStore = useAuthStore()
@@ -37,34 +37,4 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="scss">
-.app-wrapper {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-.header-container {
-  width: 100%;
-  position: fixed;
-  top: 0;
-}
-.header-wrapper {
-  padding: 20px;
-  background-color: bisque;
-  border-bottom: 1px solid;
-}
-.nav-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-}
-.footer {
-  padding: 10px;
-  background-color: #eee;
-  text-align: center;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-}
-</style>
+<style scoped lang="scss"></style>
