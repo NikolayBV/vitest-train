@@ -21,9 +21,6 @@ describe('notesView', () => {
       plugins: [createTestingPinia()]
     }
   })
-  it('should HomeView be in document', () => {
-    expect(wrapper)
-  })
   it('should logout be called', async () => {
     await wrapper.find('[data-test="logout-button"]').trigger('click')
     expect(handleLogout).toHaveBeenCalled()

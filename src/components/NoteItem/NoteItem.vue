@@ -2,7 +2,7 @@
   <ModalLayout :close-modal="changeModalState" v-show="isEditModal">
     <CreateNoteCard @click.stop :note="note" :is-edit-note="true" @updatedNote="handleUpdateItem" />
   </ModalLayout>
-  <div class="post-wrapper">
+  <div class="note">
     <h3 data-test="note-title">{{ note.title }}</h3>
     <p data-test="note-body">{{ note.body }}</p>
     <p data-test="note-author">{{ note.author }}</p>
@@ -49,6 +49,7 @@ export default defineComponent({
   },
   setup(_, { emit }) {
     const isEditModal = ref<boolean>(false)
+
     const changeModalState = () => {
       isEditModal.value = !isEditModal.value
     }
@@ -69,8 +70,8 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.post-wrapper {
-  min-height: 80px;
+.note {
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -79,11 +80,12 @@ export default defineComponent({
   padding: 10px;
   border: 1px solid;
   border-radius: 5px;
-  margin-top: 20px;
-}
-.button-wrapper {
-  width: 50%;
-  display: flex;
-  justify-content: space-between;
+  gap: 10px;
+
+  .button-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
 }
 </style>

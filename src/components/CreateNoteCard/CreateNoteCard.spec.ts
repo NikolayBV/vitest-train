@@ -1,38 +1,18 @@
-import { describe, it, vi, expect } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import CreateNoteCard from '@/components/CreateNoteCard/CreateNoteCard.vue'
 import { createTestingPinia } from '@pinia/testing'
 
-const mockHandleSubmit = vi.fn()
-
-// vi.mock('vue-hooks-form', async (importOriginal) => {
-//   const mod = await importOriginal<typeof import('vue-hooks-form')>()
-//   return {
-//     ...mod,
-//     useForm: () => ({
-//       ...mod.useForm(),
-//       handleSubmit: mockHandleSubmit
-//     })
-//   }
-// })
-
 describe('createNoteCard', () => {
-  it('title should be in component', () => {
+  it('title and input should be in component', () => {
     const wrapper = mount(CreateNoteCard, {
       global: {
         plugins: [createTestingPinia()]
       }
     })
     const card = wrapper.get('[data-test="card"]')
-    expect(card.find('p').text()).toBe('Create Note')
-  })
-  it('form should have two input', () => {
-    const wrapper = mount(CreateNoteCard, {
-      global: {
-        plugins: [createTestingPinia()]
-      }
-    })
     const form = wrapper.get('[data-test="input-container"]')
+    expect(card.find('p').text()).toBe('Create Note')
     expect(form.findAll('input').length).toBe(2)
   })
   it('input sets value and submit it', async () => {
@@ -112,6 +92,6 @@ describe('createNoteCard', () => {
       }
     })
     await wrapper.find('[data-test="input-container"]').trigger('submit.prevent')
-    expect(wrapper.emitted()).toHaveProperty('updatedNote')
+    expect(wrapper.emitted()).toHaveProperty('updateNote')
   })
 })

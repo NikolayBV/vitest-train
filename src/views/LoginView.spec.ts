@@ -22,9 +22,6 @@ describe('notesView', () => {
       plugins: [createTestingPinia()]
     }
   })
-  it('should LoginView be in document', () => {
-    expect(wrapper)
-  })
   it('should loginWithRedirect be called', async () => {
     await wrapper.find('[data-test="login-button"]').trigger('click')
     expect(handleRedirect).toHaveBeenCalled()

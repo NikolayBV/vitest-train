@@ -38,13 +38,4 @@ export default defineComponent({
   justify-content: center;
   z-index: 1000;
 }
-.modal-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  max-width: 80%;
-  width: 400px;
-  text-align: center;
-}
 </style>

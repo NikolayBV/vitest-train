@@ -1,6 +1,6 @@
 <template>
-  <div class="notes-container">
-    <div class="note-wrapper" v-if="notes.length">
+  <section class="notes">
+    <div class="notes__wrapper" v-if="notes.length">
       <NoteItem
         :key="note.id"
         v-for="note in notes"
@@ -11,9 +11,9 @@
         @handleDeleteNote="handleDeleteNote"
       />
     </div>
-    <div style="display: flex; justify-content: center" v-else>There are no notes</div>
+    <div class="notes__warning" v-else>There are no notes</div>
     <CreateNoteCard @createNote="handleCreateNote" />
-  </div>
+  </section>
 </template>
 
 <script lang="ts">
@@ -78,13 +78,17 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.notes-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 70px 0;
-}
-.note-wrapper {
-  width: 40%;
+.notes {
+  margin: 100px 0;
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  &__warning {
+    display: flex;
+    justify-content: center;
+  }
 }
 </style>

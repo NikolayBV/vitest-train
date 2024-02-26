@@ -1,5 +1,5 @@
 <template>
-  <div class="login-wrapper">
+  <div class="login">
     <button data-test="login-button" @click="login">Login</button>
   </div>
 </template>
@@ -33,9 +33,9 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.login-wrapper {
+.login {
   display: flex;
-  justify-content: center;
-  margin: 100px 0;
+  align-items: center;
+  padding: 100px 0;
 }
 </style>

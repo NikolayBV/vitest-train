@@ -4,14 +4,6 @@ import { createTestingPinia } from '@pinia/testing'
 import AboutView from '@/views/AboutView.vue'
 
 describe('notesView', () => {
-  it('should AboutView be in document', () => {
-    const wrapper = mount(AboutView, {
-      global: {
-        plugins: [createTestingPinia()]
-      }
-    })
-    expect(wrapper)
-  })
   it('should be text in component', () => {
     const wrapper = mount(AboutView, {
       global: {

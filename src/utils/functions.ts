@@ -1,5 +1,6 @@
 import type { IdToken } from '@auth0/auth0-vue'
-import type { Note, User } from '@/utils/interfaces'
+import type { IHeaderLinks, Note, User } from '@/utils/interfaces'
+import { HEADER_LINKS } from '@/utils/constants'
 
 export const formatUser = ({
   family_name = '',
@@ -58,4 +59,8 @@ export const isPossibleNoteBody = (
     const findSameText = userNotes.find((item) => item.body === noteBody)
     return !findSameText
   }
+}
+
+export const getHeaderLinks = (isAuth: boolean): IHeaderLinks[] => {
+  return HEADER_LINKS.filter((link) => (isAuth ? link.isPrivate : !link.isPrivate))
 }

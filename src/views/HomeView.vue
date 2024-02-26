@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="home-container">
+    <div class="home">
       <button data-test="logout-button" @click="setLogout">Logout</button>
     </div>
   </div>
@@ -28,12 +28,9 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.home-container {
-  margin-top: 25vh;
+.home {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  gap: 30px;
+  padding: 100px 0;
 }
 </style>

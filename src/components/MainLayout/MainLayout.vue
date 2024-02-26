@@ -3,27 +3,25 @@
     <header class="header">
       <div class="header__container">
         <nav>
-          <private-route v-if="isAuthenticated" />
-          <public-route v-else />
+          <main-route :is-auth="isAuthenticated" />
         </nav>
       </div>
     </header>
-    <div>
+    <main>
       <div class="loading" v-if="isLoading">Loading...</div>
       <slot />
-    </div>
+    </main>
     <footer class="footer">Vue Test app</footer>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import PublicRoute from '@/components/Routes/PublicRoute.vue'
-import PrivateRoute from '@/components/Routes/PrivateRoute.vue'
+import MainRoute from '@/components/Routes/MainRoute.vue'
 
 export default defineComponent({
   name: 'MainLayout',
-  components: { PrivateRoute, PublicRoute },
+  components: { MainRoute },
   props: {
     isLoading: {
       types: Boolean,
@@ -39,31 +37,32 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .layout {
-  min-height: 100%;
   display: flex;
   flex-direction: column;
-}
-.header {
-  width: 100%;
-  position: fixed;
-  top: 0;
-  .header__container {
-    height: 60px;
-    padding: 20px;
-    background-color: bisque;
-    border-bottom: 1px solid;
-  }
-}
-.loading {
-  display: flex;
   justify-content: center;
-}
-.footer {
-  padding: 10px;
-  background-color: #eee;
-  text-align: center;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+  align-items: center;
+  .header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    &__container {
+      height: 60px;
+      padding: 20px;
+      background-color: bisque;
+      border-bottom: 1px solid;
+    }
+  }
+  .loading {
+    display: flex;
+    justify-content: center;
+  }
+  .footer {
+    padding: 10px;
+    background-color: #eee;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
 }
 </style>

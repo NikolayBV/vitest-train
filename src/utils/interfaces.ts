@@ -16,3 +16,9 @@ export interface User {
   role: string
   sub: string
 }
+
+export interface IHeaderLinks {
+  title: string
+  href: string
+  isPrivate?: boolean
+}

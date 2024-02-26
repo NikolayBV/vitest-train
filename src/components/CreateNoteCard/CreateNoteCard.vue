@@ -1,7 +1,7 @@
 <template>
-  <div class="card" data-test="card">
+  <div :class="{ card: true, 'card--isEdit': isEditNote }" data-test="card">
     <p>Create Note</p>
-    <form class="form" @submit.prevent="onSubmit" data-test="input-container">
+    <form class="card__form" @submit.prevent="onSubmit" data-test="input-container">
       <input v-model="noteTitle.text" placeholder="title" data-test="input-title" />
       <p data-test="error-title" v-if="noteTitle.isError">This field is required</p>
       <input v-model="noteBody.text" placeholder="body" data-test="input-body" />
@@ -50,11 +50,11 @@ export default defineComponent({
     const { getUserState } = storeToRefs(userStore)
     const noteTitle = ref({
       text: props.note?.title || '',
-      isError: true
+      isError: !props.isEditNote
     })
     const noteBody = ref({
       text: props.note?.body || '',
-      isError: true
+      isError: !props.isEditNote
     })
 
     watch(noteBody.value, () => {
@@ -101,23 +101,24 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .card {
-  width: 40%;
   background-color: #c4b988;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  padding: 20px 0;
+  padding: 20px;
   border: 1px solid;
   border-radius: 5px;
   margin: 20px 0 40px 0;
-}
-.form {
-  width: 40%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  &--isEdit {
+    width: 30%;
+  }
 }
 </style>
