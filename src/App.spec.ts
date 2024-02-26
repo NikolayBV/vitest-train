@@ -15,10 +15,11 @@ vi.mock('@auth0/auth0-vue', async (importOriginal) => {
 
 describe('App', () => {
   it('App should renders', () => {
-    mount(App, {
+    const wrapper = mount(App, {
       global: {
         plugins: [createTestingPinia()]
       }
     })
+    expect(wrapper).toBeDefined()
   })
 })

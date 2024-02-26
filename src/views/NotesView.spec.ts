@@ -10,6 +10,6 @@ describe('notesView', () => {
     }
   })
   it('should NotesView be in document', () => {
-    expect(wrapper)
+    expect(wrapper).toBeDefined()
   })
 })
